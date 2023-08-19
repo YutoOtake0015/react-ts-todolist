@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import AdditionalForm from "./components/AdditionalForm";
+import EditForm from "./components/EditForm";
 interface todosCondition {
   id: number;
   status: string;
@@ -17,17 +18,8 @@ function App() {
 
   const [editable, setEditable] = useState(false);
   const [editId, setEditId] = useState(0);
-  const [editStatus, setEditStatus] = useState("");
   const [editTitle, setEditTitle] = useState("");
   const [editContent, setEditContent] = useState("");
-
-  // 関数
-  const clearEditFormItems = () => {
-    setEditId(0);
-    setEditStatus("");
-    setEditTitle("");
-    setEditContent("");
-  };
 
   // handle
   const handleChangeStatus = (
@@ -50,65 +42,21 @@ function App() {
     const updateTodos = todos.filter((todo) => todo.id !== targetTodo.id);
     setTodos(updateTodos);
   };
-  const handleCloseEditForm = () => {
-    setEditable(false);
-  };
-  const handleChangeEditTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditTitle(e.target.value);
-  };
-  const handleChangeEditContent = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditContent(e.target.value);
-  };
-  const handleChangeTodo = () => {
-    const updateTodos = todos.map((todo) =>
-      todo.id === editId
-        ? {
-            ...todo,
-            status: editStatus,
-            title: editTitle,
-            content: editContent,
-          }
-        : todo,
-    );
-    setTodos(updateTodos);
-    clearEditFormItems();
-    setEditable(false);
-  };
-  const handleChangeEditStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setEditStatus(e.target.value);
-  };
 
   return (
     <>
       {editable ? (
-        // 編集フォーム
-        <div>
-          状態：
-          <select value={editStatus} onChange={handleChangeEditStatus}>
-            <option value="notStarted">未着手</option>
-            <option value="inProgress">実行中</option>
-            <option value="done">完了</option>
-          </select>
-          <br />
-          <label htmlFor="title">タイトル：</label>
-          <input
-            type="text"
-            name="title"
-            value={editTitle}
-            onChange={handleChangeEditTitle}
-          />
-          <br />
-          <label htmlFor="content">内容：</label>
-          <input
-            type="text"
-            name="content"
-            value={editContent}
-            onChange={handleChangeEditContent}
-          />
-          <br />
-          <button onClick={handleChangeTodo}>保存</button>
-          <button onClick={handleCloseEditForm}>キャンセル</button>
-        </div>
+        <EditForm
+          todos={todos}
+          setTodos={setTodos}
+          setEditable={setEditable}
+          editId={editId}
+          setEditId={setEditId}
+          editTitle={editTitle}
+          setEditTitle={setEditTitle}
+          editContent={editContent}
+          setEditContent={setEditContent}
+        />
       ) : (
         <AdditionalForm todos={todos} setTodos={setTodos} />
       )}
