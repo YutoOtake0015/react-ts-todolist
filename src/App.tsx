@@ -9,7 +9,7 @@ interface todosCondition {
   content: string;
 }
 
-function App() {
+const App: React.FC = () => {
   // state
   const [todos, setTodos] = useState<todosCondition[]>([
     { id: 1, status: "notStarted", title: "初めのタスク", content: "筋トレ" },
@@ -41,23 +41,18 @@ function App() {
         // 作成フォーム
         <AdditionalForm todos={todos} setTodos={setTodos} />
       )}
-      <div>
-        {/* todoリスト */}
-        {todos.map((todo) => (
-          <TodoList
-            todo={todo}
-            todos={todos}
-            setTodos={setTodos}
-            editable={editable}
-            setEditable={setEditable}
-            setEditId={setEditId}
-            setEditTitle={setEditTitle}
-            setEditContent={setEditContent}
-          />
-        ))}
-      </div>
+      {/* todoリスト */}
+      <TodoList
+        todos={todos}
+        setTodos={setTodos}
+        editable={editable}
+        setEditable={setEditable}
+        setEditId={setEditId}
+        setEditTitle={setEditTitle}
+        setEditContent={setEditContent}
+      />
     </>
   );
-}
+};
 
 export default App;

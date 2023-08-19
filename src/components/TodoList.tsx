@@ -7,7 +7,6 @@ interface todosCondition {
   content: string;
 }
 interface TodoListProps {
-  todo: todosCondition;
   todos: todosCondition[];
   setTodos: React.Dispatch<React.SetStateAction<todosCondition[]>>;
   editable: boolean;
@@ -20,7 +19,6 @@ interface TodoListProps {
 const TodoList: React.FC<TodoListProps> = ({
   todos,
   setTodos,
-  todo,
   editable,
   setEditable,
   setEditId,
@@ -48,29 +46,32 @@ const TodoList: React.FC<TodoListProps> = ({
     const updateTodos = todos.filter((todo) => todo.id !== targetTodo.id);
     setTodos(updateTodos);
   };
+
   return (
     <div>
-      <ul key={todo.id} style={{ listStyle: "none" }}>
-        <li>
-          状態：
-          <select
-            value={todo.status}
-            onChange={(e) => handleChangeStatus(todo, e)}
-            disabled={editable}
-          >
-            <option value="notStarted">未着手</option>
-            <option value="inProgress">実行中</option>
-            <option value="done">完了</option>
-          </select>{" "}
-        </li>
-        <li> タイトル：{todo.title} </li>
-        <li>内容：{todo.content}</li>
-        <button onClick={() => handleEditTodo(todo)}>編集</button>
-        {!editable && (
-          <button onClick={() => handleDeleteTodo(todo)}>削除</button>
-        )}
-        <hr />
-      </ul>
+      {todos.map((todo) => (
+        <ul key={todo.id} style={{ listStyle: "none" }}>
+          <li>
+            状態：
+            <select
+              value={todo.status}
+              onChange={(e) => handleChangeStatus(todo, e)}
+              disabled={editable}
+            >
+              <option value="notStarted">未着手</option>
+              <option value="inProgress">実行中</option>
+              <option value="done">完了</option>
+            </select>{" "}
+          </li>
+          <li> タイトル：{todo.title} </li>
+          <li>内容：{todo.content}</li>
+          <button onClick={() => handleEditTodo(todo)}>編集</button>
+          {!editable && (
+            <button onClick={() => handleDeleteTodo(todo)}>削除</button>
+          )}
+          <hr />
+        </ul>
+      ))}
     </div>
   );
 };
