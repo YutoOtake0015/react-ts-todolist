@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import AdditionalForm from "./components/AdditionalForm";
 import EditForm from "./components/EditForm";
+import TodoList from "./components/TodoList";
 interface todosCondition {
   id: number;
   status: string;
@@ -21,31 +22,10 @@ function App() {
   const [editTitle, setEditTitle] = useState("");
   const [editContent, setEditContent] = useState("");
 
-  // handle
-  const handleChangeStatus = (
-    targetTodo: todosCondition,
-    e: React.ChangeEvent<HTMLSelectElement>,
-  ) => {
-    const updateTodos = todos.map((todo) =>
-      todo.id === targetTodo.id ? { ...todo, status: e.target.value } : todo,
-    );
-    setTodos(updateTodos);
-  };
-  const handleEditTodo = (targetTodo: todosCondition) => {
-    setEditable(true);
-
-    setEditId(targetTodo.id);
-    setEditTitle(targetTodo.title);
-    setEditContent(targetTodo.content);
-  };
-  const handleDeleteTodo = (targetTodo: todosCondition) => {
-    const updateTodos = todos.filter((todo) => todo.id !== targetTodo.id);
-    setTodos(updateTodos);
-  };
-
   return (
     <>
       {editable ? (
+        // 編集フォーム
         <EditForm
           todos={todos}
           setTodos={setTodos}
@@ -58,32 +38,22 @@ function App() {
           setEditContent={setEditContent}
         />
       ) : (
+        // 作成フォーム
         <AdditionalForm todos={todos} setTodos={setTodos} />
       )}
       <div>
         {/* todoリスト */}
         {todos.map((todo) => (
-          <ul key={todo.id} style={{ listStyle: "none" }}>
-            <li>
-              状態：
-              <select
-                value={todo.status}
-                onChange={(e) => handleChangeStatus(todo, e)}
-                disabled={editable}
-              >
-                <option value="notStarted">未着手</option>
-                <option value="inProgress">実行中</option>
-                <option value="done">完了</option>
-              </select>{" "}
-            </li>
-            <li> タイトル：{todo.title} </li>
-            <li>内容：{todo.content}</li>
-            <button onClick={() => handleEditTodo(todo)}>編集</button>
-            {!editable && (
-              <button onClick={() => handleDeleteTodo(todo)}>削除</button>
-            )}
-            <hr />
-          </ul>
+          <TodoList
+            todo={todo}
+            todos={todos}
+            setTodos={setTodos}
+            editable={editable}
+            setEditable={setEditable}
+            setEditId={setEditId}
+            setEditTitle={setEditTitle}
+            setEditContent={setEditContent}
+          />
         ))}
       </div>
     </>
