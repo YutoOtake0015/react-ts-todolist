@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import AdditionalForm from "./components/AdditionalForm";
 interface todosCondition {
   id: number;
   status: string;
@@ -13,15 +14,6 @@ function App() {
     { id: 2, status: "inProgress", title: "次のタスク", content: "ランニング" },
     { id: 3, status: "done", title: "第３のタスク", content: "瞑想" },
   ]);
-  const [todo, setTodo] = useState<todosCondition>({
-    id: 0,
-    status: "",
-    title: "",
-    content: "",
-  });
-  const [newId, setNewId] = useState(todos.length + 1);
-  const [newTitle, setNewTitle] = useState("");
-  const [newContent, setNewContent] = useState("");
 
   const [editable, setEditable] = useState(false);
   const [editId, setEditId] = useState(0);
@@ -30,10 +22,6 @@ function App() {
   const [editContent, setEditContent] = useState("");
 
   // 関数
-  const clearAddFormItems = () => {
-    setNewTitle("");
-    setNewContent("");
-  };
   const clearEditFormItems = () => {
     setEditId(0);
     setEditStatus("");
@@ -42,20 +30,6 @@ function App() {
   };
 
   // handle
-  const handleAddTodo = () => {
-    setTodos([
-      ...todos,
-      { id: newId, status: "notStarted", title: newTitle, content: newContent },
-    ]);
-    setNewId((prevId) => prevId + 1);
-    clearAddFormItems();
-  };
-  const handleChangeNewTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewTitle(e.target.value);
-  };
-  const handleChangeNewContent = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNewContent(e.target.value);
-  };
   const handleChangeStatus = (
     targetTodo: todosCondition,
     e: React.ChangeEvent<HTMLSelectElement>,
@@ -136,26 +110,7 @@ function App() {
           <button onClick={handleCloseEditForm}>キャンセル</button>
         </div>
       ) : (
-        // 追加フォーム
-        <div>
-          <label htmlFor="title">タイトル：</label>
-          <input
-            type="text"
-            name="title"
-            value={newTitle}
-            onChange={handleChangeNewTitle}
-          />
-          <br />
-          <label htmlFor="content">内容：</label>
-          <input
-            type="text"
-            name="content"
-            value={newContent}
-            onChange={handleChangeNewContent}
-          />
-          <br />
-          <button onClick={handleAddTodo}>作成</button>
-        </div>
+        <AdditionalForm todos={todos} setTodos={setTodos} />
       )}
       <div>
         {/* todoリスト */}
