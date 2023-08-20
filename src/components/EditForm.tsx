@@ -1,5 +1,3 @@
-import React, { useState } from "react";
-
 interface todosCondition {
   id: number;
   status: string;
@@ -29,13 +27,7 @@ const EditForm: React.FC<EditFormProps> = ({
   editContent,
   setEditContent,
 }) => {
-  // const
-  const [editStatus, setEditStatus] = useState("");
-
   // handle
-  const handleChangeEditStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setEditStatus(e.target.value);
-  };
   const handleCloseEditForm = () => {
     setEditable(false);
   };
@@ -50,7 +42,6 @@ const EditForm: React.FC<EditFormProps> = ({
       todo.id === editId
         ? {
             ...todo,
-            status: editStatus,
             title: editTitle,
             content: editContent,
           }
@@ -64,20 +55,12 @@ const EditForm: React.FC<EditFormProps> = ({
   // 関数
   const clearEditFormItems = () => {
     setEditId(0);
-    setEditStatus("");
     setEditTitle("");
     setEditContent("");
   };
 
   return (
     <div>
-      状態：
-      <select value={editStatus} onChange={handleChangeEditStatus}>
-        <option value="notStarted">未着手</option>
-        <option value="inProgress">実行中</option>
-        <option value="done">完了</option>
-      </select>
-      <br />
       <label htmlFor="title">タイトル：</label>
       <input
         type="text"
